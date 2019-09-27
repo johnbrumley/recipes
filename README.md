@@ -68,3 +68,31 @@ problem was needing to ssh over a weird port
 ```console
 user@commputer:~$ rsync -avh -e "ssh -p 21098" ./files/to/sync  username@website.com:/home/username/path/to/dir
 ```
+
+## set up dns redirect using openwrt
+
+To `/etc/dnsmasq.conf` add:
+
+```conf
+address=/#/192.168.1.1
+```
+
+This will cause everything to point back to the router's ip (use different ip if router has a different one)
+
+Then add a redirect page to the uhttpd server in `/www/index.html`, probably this is a nice thing to do:
+
+```console
+mv /www/index.html /www/index.html.original
+```
+
+In the new `index.html` use something like this:
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="refresh" content="0; url=http://host-name:port" />
+</head>
+<body></body>
+</html>
+```
